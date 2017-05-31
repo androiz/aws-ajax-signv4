@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+aja
+	<script type="text/javascript" src="lib/hmac-sha256.js"></script>
+	<script type="text/javascript" src="ajaxSignClient.js"></script>
+</head>
+<body>
+	<script type="text/javascript">
+
+		// Initialization
+		var signclient = ajaxSignClient.newClient({
+			accessKey: '<accessKey>',
+			secretKey: '<secretKey>',
+            sessionToken: '',
+            serviceName: '',
+            region: '<region>',
+            apiKey: '<apiKey>',
+            endpoint: '<endpoint>'
+            // defaultContentType: 'application/json'
+            // defaultAcceptType: 'application/json'
+		});
+
+		// Signing Request
+		var signedRequest = signclient.ajaxSignedRequest(
+			{
+	    		verb: 'GET',
+	    		path: '/path/',
+	    		queryParams: {
+	    			"query": "Sevilla"
+	    		},
+	    		body: {},
+	    		headers: {
+	    			"x-api-key": signclient.config.apiKey
+	    		}
+	    	}
+	    );
+
+		// Performing request
+		$.ajax({
+            url: signedRequest.url,
+            type: signedRequest.method,
+            dataType: 'json',
+            data: signedRequest.data,
+            headers: signedRequest.headers,
+            success: function (data, status, request) { 
+            	console.log(data);
+            },
+            failure: function () {
+            	console.log("error");
+            }
+        });
+	</script>
+</body>
+</html>
